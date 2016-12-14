@@ -18,65 +18,47 @@ const commonjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const pkg = require('../package.json');
 
+const presets = [['es2015', { loose: true, modules: false }]];
+
 // The source files to be compiled by Rollup
-const files = [
-  {
-    format: 'cjs',
-    ext: '.js',
-    presets: ['es2016', 'es2017'],
-    plugins: [
-      'external-helpers',
-      'transform-runtime',
-    ],
-  },
-  {
-    format: 'es',
-    ext: '.mjs',
-    presets: ['es2016', 'es2017'],
-    plugins: [
-      'external-helpers',
-      'transform-runtime',
-    ],
-  },
-  {
-    format: 'cjs',
-    ext: '.js',
-    output: 'legacy',
-    presets: [['latest', { es2015: { modules: false } }]],
-    plugins: ['transform-runtime'],
-  },
-  {
-    format: 'cjs',
-    ext: '.js',
-    output: 'browser',
-    presets: [['latest', { es2015: { modules: false } }]],
-    plugins: ['transform-runtime'],
-  },
-  {
-    format: 'es',
-    ext: '.mjs',
-    output: 'browser',
-    presets: [['latest', { es2015: { modules: false } }]],
-    plugins: ['transform-runtime'],
-  },
-  {
-    format: 'umd',
-    ext: '.js',
-    presets: [['latest', { es2015: { modules: false } }]],
-    plugins: ['transform-runtime'],
-    output: pkg.name,
-    moduleName: 'UniversalRouter',
-  },
-  {
-    format: 'umd',
-    ext: '.min.js',
-    presets: [['latest', { es2015: { modules: false } }]],
-    plugins: ['transform-runtime'],
-    output: pkg.name,
-    moduleName: 'UniversalRouter',
-    minify: true,
-  },
-];
+const files = [{
+  format: 'cjs',
+  ext: '.js',
+  presets,
+  plugins: ['async-to-promises'],
+}, {
+  format: 'es',
+  ext: '.mjs',
+  presets,
+  plugins: ['async-to-promises'],
+}, {
+  format: 'cjs',
+  ext: '.js',
+  output: 'browser',
+  presets,
+  plugins: ['async-to-promises'],
+}, {
+  format: 'es',
+  ext: '.mjs',
+  output: 'browser',
+  presets,
+  plugins: ['async-to-promises'],
+}, {
+  format: 'umd',
+  ext: '.js',
+  presets,
+  plugins: ['async-to-promises'],
+  output: pkg.name,
+  moduleName: 'UniversalRouter',
+}, {
+  format: 'umd',
+  ext: '.min.js',
+  presets,
+  plugins: ['async-to-promises'],
+  output: pkg.name,
+  moduleName: 'UniversalRouter',
+  minify: true,
+}];
 
 let promise = Promise.resolve();
 
@@ -84,7 +66,7 @@ let promise = Promise.resolve();
 promise = promise.then(() => del(['build/*']));
 
 // Compile source code into a distributable format with Babel
-for (const file of files) {
+for (const file of files) { // eslint-disable-line
   promise = promise.then(() => rollup.rollup({
     entry: 'src/main.js',
     external: file.format === 'umd' ? [] : Object.keys(pkg.dependencies),
@@ -93,7 +75,7 @@ for (const file of files) {
       babel({
         babelrc: false,
         exclude: 'node_modules/**',
-        runtimeHelpers: true,
+        runtimeHelpers: false,
         presets: file.presets,
         plugins: file.plugins,
       }),

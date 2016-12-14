@@ -13,15 +13,17 @@ async function resolve(routes, pathOrContext) {
   const context = typeof pathOrContext === 'string' || pathOrContext instanceof String
     ? { path: pathOrContext }
     : pathOrContext;
-  const root = Array.isArray(routes) ? { path: '/', children: routes } : routes;
+  const rootRoute = Array.isArray(routes) ? { path: '/', children: routes } : routes;
   let result = null;
   let value;
-  let done = false;
 
-  const match = matchRoute(root, '', context.path);
+  const match = matchRoute(rootRoute, '', context.path);
 
+  let i = 0;
   async function next() {
-    ({ value, done } = match.next());
+    const done = match.length === i - 1;
+    value = match[i];
+    i += 1;
 
     if (!value || done || (result !== null && result !== undefined)) {
       return result;

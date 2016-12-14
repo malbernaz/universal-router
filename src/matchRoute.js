@@ -9,20 +9,21 @@
 
 import { matchPath, matchBasePath } from './matchPath';
 
-function* matchRoute(route, baseUrl, path, parentParams) {
+function matchRoute(route, baseUrl, path, parentParams) {
+  const routes = [];
   let match;
 
   if (!route.children) {
     match = matchPath(route.path, path, parentParams);
 
     if (match) {
-      yield {
+      routes.push({
         route,
         baseUrl,
         path: match.path,
         keys: match.keys,
         params: match.params,
-      };
+      });
     }
   }
 
@@ -30,25 +31,28 @@ function* matchRoute(route, baseUrl, path, parentParams) {
     match = matchBasePath(route.path, path, parentParams);
 
     if (match) {
-      yield {
+      routes.push({
         route,
         baseUrl,
         path: match.path,
         keys: match.keys,
         params: match.params,
-      };
+      });
 
       for (let i = 0; i < route.children.length; i += 1) {
         const newPath = path.substr(match.path.length);
-        yield* matchRoute(
+
+        routes.push(matchRoute(
           route.children[i],
           baseUrl + (match.path === '/' ? '' : match.path),
           newPath.startsWith('/') ? newPath : `/${newPath}`,
           match.params
-        );
+        ));
       }
     }
   }
+
+  return Array.prototype.concat.apply([], routes);
 }
 
 export default matchRoute;
