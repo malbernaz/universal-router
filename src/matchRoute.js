@@ -9,35 +9,48 @@
 
 import { matchPath, matchBasePath } from './matchPath';
 
+const cache = new Map();
+
 function matchRoute(route, baseUrl, path, parentParams) {
   const routes = [];
-  let match;
+  const key = route;
+  const routeToReturn = cache.get(key);
+
+  if (routeToReturn) {
+    return routeToReturn;
+  }
 
   if (!route.children) {
-    match = matchPath(route.path, path, parentParams);
+    const match = matchPath(route.path, path, parentParams);
 
     if (match) {
-      routes.push({
+      const routeObj = {
         route,
         baseUrl,
         path: match.path,
         keys: match.keys,
         params: match.params,
-      });
+      };
+
+      cache.set(key, routeObj);
+
+      routes.push(routeObj);
     }
   }
 
   if (route.children) {
-    match = matchBasePath(route.path, path, parentParams);
+    const match = matchBasePath(route.path, path, parentParams);
 
     if (match) {
-      routes.push({
+      const routeObj = {
         route,
         baseUrl,
         path: match.path,
         keys: match.keys,
         params: match.params,
-      });
+      };
+
+      routes.push(routeObj);
 
       for (let i = 0; i < route.children.length; i += 1) {
         const newPath = path.substr(match.path.length);

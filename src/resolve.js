@@ -9,7 +9,7 @@
 
 import matchRoute from './matchRoute';
 
-async function resolve(routes, pathOrContext) {
+function resolve(routes, pathOrContext) {
   const context = typeof pathOrContext === 'string' || pathOrContext instanceof String
     ? { path: pathOrContext }
     : pathOrContext;
@@ -20,34 +20,44 @@ async function resolve(routes, pathOrContext) {
   const match = matchRoute(rootRoute, '', context.path);
 
   let i = 0;
-  async function next() {
+  function next() {
     const done = match.length === i - 1;
     value = match[i];
     i += 1;
 
-    if (!value || done || (result !== null && result !== undefined)) {
-      return result;
-    }
+    return Promise.resolve()
+      .then(() => {
+        if (!value || done || (result !== null && result !== undefined)) {
+          return result;
+        }
 
-    if (value.route.action) {
-      const newContext = Object.assign({}, context, value);
-      result = await value.route.action(newContext, newContext.params);
-    }
+        if (value.route.action) {
+          return Promise.resolve()
+            .then(() => {
+              const newContext = Object.assign({}, context, value);
+              return value.route.action(newContext, newContext.params);
+            })
+            .then((_res) => { result = _res; })
+            .then(() => next());
+        }
 
-    return await next();
+        return next();
+      });
   }
 
   context.next = next;
 
-  await next();
+  return Promise.resolve()
+    .then(() => next())
+    .then(() => {
+      if (result === null || result === undefined) {
+        const error = new Error('Page not found');
+        error.status = error.statusCode = 404;
+        throw error;
+      }
 
-  if (result === null || result === undefined) {
-    const error = new Error('Page not found');
-    error.status = error.statusCode = 404;
-    throw error;
-  }
-
-  return result;
+      return result;
+    });
 }
 
 export default resolve;
