@@ -9,6 +9,16 @@
 
 import { matchPath, matchBasePath } from './matchPath';
 
+function flatten(arr) {
+  const flattenIfArray = arr2 => arr2.reduce((a, c) => {
+    if (Array.isArray(c)) {
+      return [...a, ...flattenIfArray(c)];
+    }
+    return [...a, c];
+  }, []);
+  return flattenIfArray(arr);
+}
+
 const cache = new Map();
 
 function matchRoute(route, baseUrl, path, parentParams) {
@@ -67,7 +77,7 @@ function matchRoute(route, baseUrl, path, parentParams) {
     }
   }
 
-  return Array.prototype.concat(...routes);
+  return flatten(routes);
 }
 
 export default matchRoute;

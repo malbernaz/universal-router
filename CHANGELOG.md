@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### [v2.1.0] - 2016-10-20
+
+- Ditch babel-runtime as a dependency
+
 ### [v2.0.0] - 2016-10-20
 
 - Preserve `context.params` values from the parent route ([#57](https://github.com/kriasoft/universal-router/pull/57))

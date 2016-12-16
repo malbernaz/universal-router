@@ -1,14 +1,14 @@
 {
   "private": true,
-  "name": "universal-router",
-  "version": "2.0.0",
+  "name": "universal-router-alternative",
+  "version": "2.1.0",
   "description": "Isomorphic router for JavaScript web applications",
-  "homepage": "https://www.kriasoft.com/universal-router/",
-  "repository": "kriasoft/universal-router",
+  "repository": "malbernaz/universal-router-alternative",
   "author": "Kriasoft <support@kriasoft.com> (https://www.kriasoft.com)",
   "contributors": [
     "Konstantin Tarkus <hello@tarkus.me> (https://tarkus.me)",
-    "Vladimir Kutepov <frenzzy.man@gmail.com>"
+    "Vladimir Kutepov <frenzzy.man@gmail.com>",
+    "Miguel Albernaz <albernazmiguel@gmail.com>"
   ],
   "license": "MIT",
   "keywords": [
@@ -41,7 +41,6 @@
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-plugin-async-to-promises": "^1.0.5",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "babel-plugin-uglify": "^1.0.2",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.16.3",
@@ -53,7 +52,7 @@
     "eslint-plugin-import": "^2.0.1",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.1.2",
-    "rollup": "0.37.0",
+    "rollup": "^0.37.0",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^6.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
@@ -67,8 +66,6 @@
     "test:cover": "babel-node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "build": "node tools/build",
-    "prepublish": "node tools/build",
-    "publish:docs": "easystatic deploy docs --repo=kriasoft/universal-router",
-    "start": "easystatic start docs"
+    "prepublish": "node tools/build"
   }
 }
