@@ -50,6 +50,8 @@ function matchRoute(route, baseUrl, path, parentParams) {
         params: match.params,
       };
 
+      cache.set(key, routeObj);
+
       routes.push(routeObj);
 
       for (let i = 0; i < route.children.length; i += 1) {
@@ -59,13 +61,13 @@ function matchRoute(route, baseUrl, path, parentParams) {
           route.children[i],
           baseUrl + (match.path === '/' ? '' : match.path),
           newPath.startsWith('/') ? newPath : `/${newPath}`,
-          match.params
+          match.params,
         ));
       }
     }
   }
 
-  return Array.prototype.concat.apply([], routes);
+  return Array.prototype.concat(...routes);
 }
 
 export default matchRoute;

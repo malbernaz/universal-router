@@ -30,16 +30,6 @@ const files = [{
   ext: '.mjs',
   presets,
 }, {
-  format: 'cjs',
-  ext: '.js',
-  output: 'browser',
-  presets,
-}, {
-  format: 'es',
-  ext: '.mjs',
-  output: 'browser',
-  presets,
-}, {
   format: 'umd',
   ext: '.js',
   presets,
@@ -60,7 +50,8 @@ let promise = Promise.resolve();
 promise = promise.then(() => del(['build/*']));
 
 // Compile source code into a distributable format with Babel
-for (const file of files) { // eslint-disable-line
+// eslint-disable-next-line no-restricted-syntax
+for (const file of files) {
   promise = promise.then(() => rollup.rollup({
     entry: 'src/main.js',
     external: file.format === 'umd' ? [] : Object.keys(pkg.dependencies),

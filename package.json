@@ -23,8 +23,6 @@
   ],
   "main": "main.js",
   "jsnext:main": "main.mjs",
-  "browser": "browser.js",
-  "jsnext:browser": "browser.mjs",
   "babel": {
     "presets": [
       "es2015"
@@ -51,13 +49,13 @@
     "coveralls": "^2.11.14",
     "del": "^2.2.2",
     "eslint": "^3.8.1",
-    "eslint-config-airbnb-base": "^9.0.0",
+    "eslint-config-airbnb-base": "^11.0.0",
     "eslint-plugin-import": "^2.0.1",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.1.2",
-    "rollup": "^0.36.3",
+    "rollup": "0.37.0",
     "rollup-plugin-babel": "^2.6.1",
-    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-commonjs": "^6.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-uglify": "^1.0.1",
     "sinon": "^2.0.0-pre.3"
