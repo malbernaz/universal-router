@@ -19,32 +19,20 @@ function flatten(arr) {
   return flattenIfArray(arr);
 }
 
-const cache = new Map();
-
 function matchRoute(route, baseUrl, path, parentParams) {
   const routes = [];
-  const key = route;
-  const routeToReturn = cache.get(key);
-
-  if (routeToReturn) {
-    return routeToReturn;
-  }
 
   if (!route.children) {
     const match = matchPath(route.path, path, parentParams);
 
     if (match) {
-      const routeObj = {
+      routes.push({
         route,
         baseUrl,
         path: match.path,
         keys: match.keys,
         params: match.params,
-      };
-
-      cache.set(key, routeObj);
-
-      routes.push(routeObj);
+      });
     }
   }
 
@@ -52,17 +40,13 @@ function matchRoute(route, baseUrl, path, parentParams) {
     const match = matchBasePath(route.path, path, parentParams);
 
     if (match) {
-      const routeObj = {
+      routes.push({
         route,
         baseUrl,
         path: match.path,
         keys: match.keys,
         params: match.params,
-      };
-
-      cache.set(key, routeObj);
-
-      routes.push(routeObj);
+      });
 
       for (let i = 0; i < route.children.length; i += 1) {
         const newPath = path.substr(match.path.length);
