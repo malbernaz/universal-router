@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "universal-router-alternative",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Isomorphic router for JavaScript web applications",
   "repository": "malbernaz/universal-router-alternative",
   "author": "Kriasoft <support@kriasoft.com> (https://www.kriasoft.com)",
