@@ -1,5 +1,7 @@
 # Universal Router Alternative
 
+## deprecated since the original universal-router module has addressed all the issues this package was trying to solve. And most importantly does not depend on babel-runtime anymore.
+
 This is a small reimplementation of the awesome module [Universal Router](https://github.com/koistya/universal-router).
 It differs from the original package as it do not depend on babel-runtime.
 
